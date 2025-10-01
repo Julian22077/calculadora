@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Contador from './Calculadora';
+import Calculadora from './Calculadora';
 function App() {
   return (
     <div className="App">
@@ -17,7 +17,7 @@ function App() {
         >
           Learn React
         </a>
-        <Contador/>
+        <Calculadora/>
       </header>
       
     </div>
