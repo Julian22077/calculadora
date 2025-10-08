@@ -1,26 +1,30 @@
 import { useState } from "react";
 
+
 const Calculadora = () => {
-  const [pantalla, setPantalla] = useState("0");
-  const [guardado, setGuardado] = useState(null);
-  const [operacion, setOperacion] = useState(null);
+  const [pantalla, setPantalla] = useState("");
+  const [guardado, setGuardado] = useState(0);
+  const [operacion, setOperacion] = useState("");
 
   function numero(n) {
-    if (pantalla === "0") {
+    if (pantalla === "") {
       setPantalla(String(n));
     } else {
       setPantalla(pantalla + String(n));
     }
+    
   }
 
   function operador(op) {
     setGuardado(Number(pantalla));
     setOperacion(op);
-    setPantalla("0");
+    setPantalla("");
   }
+  
+ 
 
   function igual() {
-    if (!guardado || !operacion) return;
+    if (guardado===null || operacion==="") return;
 
     const n2 = Number(pantalla);
     let res;
@@ -28,17 +32,44 @@ const Calculadora = () => {
     if (operacion === "+") res = guardado + n2;
     if (operacion === "-") res = guardado - n2;
     if (operacion === "*") res = guardado * n2;
-    if (operacion === "/") res = guardado / n2;
+    if (operacion === "/") {
+      if(n2==0||guardado==0 && n2==0){
+        setPantalla("No se puede dividir por cero ");
+        setGuardado(0);
+        setOperacion("");
+        return;
+      }
+      res = guardado / n2;
+    }
+    if(operacion==="^") res=guardado**n2;
+    if(operacion==="r") {
+      if(guardado<0){
+        setPantalla("Error, no existe raiz negativa");
+        setGuardado(0);
+        setOperacion("");
 
-    setPantalla(String(res));
-    setGuardado(null);
-    setOperacion(null);
+      }
+      res=Math.sqrt(guardado);
+    }
+    if(operacion==="log") {
+      if(guardado<=0){
+        setPantalla("Error");
+        setGuardado(0);
+        setOperacion("");
+        return;
+      }
+    res=Math.log(guardado);
+    }
+
+    setPantalla( String(res));
+    setGuardado(0);
+    setOperacion("");
   }
 
   function reset() {
-    setPantalla("0");
-    setGuardado(null);
-    setOperacion(null);
+    setPantalla("");
+    setGuardado(0);
+    setOperacion("");
   }
 
   return (
@@ -65,6 +96,9 @@ const Calculadora = () => {
       <button onClick={() => operador("-")}>-</button>
       <button onClick={() => operador("/")}>/</button>
       <button onClick={() => operador("*")}>*</button>
+      <button onClick={() => operador("^")}>^</button>
+      <button onClick={() => operador("r")}>r</button>
+      <button onClick={() => operador("log")}>log</button>
       <br />
       <button onClick={igual}>=</button>
     </div>
